@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Mentor4U_Avalonia.ViewModels;
+using Mentor4U_Avalonia.ViewModels.Windows;
 using Mentor4U_Avalonia.Views;
 
 namespace Mentor4U_Avalonia;
@@ -17,9 +18,9 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            desktop.MainWindow = new StartWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new StartWindowViewModel(),
             };
         }
 

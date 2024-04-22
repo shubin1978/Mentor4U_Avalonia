@@ -1,0 +1,24 @@
+﻿@startuml
+
+package Views {
+    class StartWindow  
+    class AuthWindow
+}
+note right of Views: XAML   
+
+package Controls {
+    class InputControl
+}
+
+package ViewModels {
+    package Controls {
+        class InputControlViewModel
+    }
+    package Windows {
+        class AuthWindowViewModel
+        class StartWindowViewModel
+    }
+}
+
+
+@enduml
