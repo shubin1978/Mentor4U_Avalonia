@@ -103,6 +103,6 @@ public class AuthWindowViewModel : ViewModelBase
             await box.ShowAsync();
          },
          canExecute : canExecuteAuthCommand);
-      
+       
    }
 }

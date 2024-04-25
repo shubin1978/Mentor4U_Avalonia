@@ -1,8 +1,6 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls;
 
-namespace Mentor4U_Avalonia.Controls;
+namespace Mentor4U_Avalonia.Views.Controls;
 
 public partial class InputControl : UserControl
 {

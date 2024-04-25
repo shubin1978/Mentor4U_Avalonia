@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
 using Mentor4U_Avalonia.Views;
+using AuthWindow = Mentor4U_Avalonia.Views.Windows.AuthWindow;
 
 namespace Mentor4U_Avalonia.ViewModels.Windows;
 

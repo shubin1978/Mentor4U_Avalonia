@@ -1,24 +1,76 @@
 ﻿@startuml
 
 package Views {
-    class StartWindow  
-    class AuthWindow
-}
-note right of Views: XAML   
-
-package Controls {
-    class InputControl
-}
+    package Windows {
+        class StartWindow {
+            + Button ButtonAuth { Command="{Binding Auth}"}
+            + Button ButtonClose { Command="{Binding CloseWindow}" }         
+        } 
+        class AuthWindow {
+            + InputControl InputControlLogin { DataContext="{Binding InputLogin}" }
+            + InputControl InputControlPassword { DataContext="{Binding InputPassword} }
+            + Button ButtonAuth { Command="{Binding AuthCommand}" }
+            + Button ButtonClear { Command="{Binding ClearCommand}" }
+        }
+    }
+    
+    package Controls {
+        class InputControl {
+            + Label Label {Content="{Binding Label}"}
+            + TextBox Input {Text="{Binding Input}"
+                      Watermark="{Binding Watermark}"
+                      UseFloatingWatermark="{Binding IsFloatingWatermark}"}
+        }
+    }
+}  
+note right of Views : XAML
 
 package ViewModels {
     package Controls {
-        class InputControlViewModel
+        class InputControlViewModel {
+            + string Label { get; set; }
+            + string? Input { get; set; }
+            + string? Watermark { get; set; }
+            + bool IsFloatingWatermark { get; set; }
+        }
+    note left of InputControlViewModel::Label 
+    Rx Prop
+    end note
+    note left of InputControlViewModel::Input 
+    Rx Prop
+    end note
+    note left of InputControlViewModel::Watermark 
+    Rx Prop
+    end note
+    note left of InputControlViewModel::IsFloatingWatermark 
+    Rx Prop
+    end note
+    
     }
     package Windows {
-        class AuthWindowViewModel
-        class StartWindowViewModel
+        class StartWindowViewModel {
+            + void CloseWindow()
+            + void Auth()
+        }
+        class AuthWindowViewModel {
+            + public InputControlViewModel InputLogin { get; set; }
+            + public InputControlViewModel InputPassword { get; set; }
+            
+            + public ReactiveCommand<Unit, Task> AuthCommand { get; }
+            + public ReactiveCommand<Unit, Unit> ClearCommand { get; }
+        }
     }
 }
+note left of ViewModels 
+C#
+end note
 
 
+InputControlViewModel <.. InputControl
+
+AuthWindowViewModel <.. AuthWindow
+StartWindowViewModel <.. StartWindow
+
+InputControl <-- AuthWindow
+InputControlViewModel <-- AuthWindowViewModel
 @enduml
