@@ -103,6 +103,17 @@ public class AuthWindowViewModel : ViewModelBase
             await box.ShowAsync();
          },
          canExecute : canExecuteAuthCommand);
-       
+      
+      var canExecuteClearCommand = this.WhenAnyValue(
+         p1 => p1.InputLogin.Input,
+         p2 => p2.InputPassword.Input,
+         (p1, p2) => !string.IsNullOrWhiteSpace(p1) || !string.IsNullOrWhiteSpace(p2));
+      ClearCommand = ReactiveCommand.Create(() =>
+         {
+            InputLogin.Input = null;
+            InputPassword.Input = null;
+         },
+         canExecute: canExecuteClearCommand);
+
    }
 }
