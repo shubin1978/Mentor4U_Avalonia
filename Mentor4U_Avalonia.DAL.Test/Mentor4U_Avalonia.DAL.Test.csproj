@@ -26,4 +26,11 @@
       <ProjectReference Include="..\Mentor4U_Avalonia.DAL\Mentor4U_Avalonia.DAL.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="log_paths.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <DependentUpon>ViewLocator.cs</DependentUpon>
+      </None>
+    </ItemGroup>
+
 </Project>
