@@ -1,11 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Mentor4U_Avalonia.ViewModels;
-using Mentor4U_Avalonia.ViewModels.Windows;
-using Mentor4U_Avalonia.Views;
-using Mentor4U_Avalonia.Views.Windows;
-using StartWindow = Mentor4U_Avalonia.Views.Windows.StartWindow;
+
 
 namespace Mentor4U_Avalonia;
 
@@ -20,9 +16,9 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new StartWindow
+            desktop.MainWindow = new Views.Windows.Roles();
             {
-                DataContext = new StartWindowViewModel(),
+                DataContext = new ViewModels.Windows.Roles();
             };
             
         }
