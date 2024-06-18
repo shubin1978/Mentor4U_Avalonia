@@ -11,7 +11,7 @@ public static class DbService<TEntity> where TEntity : IModel
    private static readonly ILogger _logger = new LogToFile();
    private static NpgsqlConnection? _connection;
 
-   public static Task ConnectAsync(string connectionString)
+   public static async Task ConnectAsync(string connectionString)
    {
       if (string.IsNullOrEmpty(connectionString)) 
          throw new EmptyStringException(nameof(connectionString));
@@ -19,17 +19,18 @@ public static class DbService<TEntity> where TEntity : IModel
       Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
       //Эта строчка позволит сопоставлять имена с нижним подчеркиванием
       //с названиями свойств класса без подчеркивания
+      _connection = new NpgsqlConnection(connectionString);
+      await _connection.OpenAsync();
 
-      ExceptionsExtensions.LoggingIfException(
+      /*ExceptionsExtensions.LoggingIfException(
          logger:_logger,
          action: async () =>
             {
-               _connection = new NpgsqlConnection(connectionString);
-               await _connection.OpenAsync();
+              
             }, 
          moduleName: nameof(DbService<TEntity>),
          methodName: nameof(ConnectAsync));
-      return Task.CompletedTask;
+      return Task.CompletedTask;*/
    }
 
 
@@ -67,15 +68,17 @@ public static class DbService<TEntity> where TEntity : IModel
    {
       if (_connection == null) return;
       
-      ExceptionsExtensions.LoggingIfException(
+      await _connection.CloseAsync();
+      await _connection.DisposeAsync();
+      
+      /*ExceptionsExtensions.LoggingIfException(
          logger: _logger,
          action: async () =>
          {
-            await _connection.CloseAsync();
-            await _connection.DisposeAsync();
+            
          },
          moduleName: nameof(DbService<TEntity>),
-         methodName: nameof(DisconnectAsync));
+         methodName: nameof(DisconnectAsync));*/
       
    }
 }
