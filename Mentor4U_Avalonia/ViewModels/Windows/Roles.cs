@@ -1,5 +1,8 @@
 ﻿using System;
-using System.Reactive; 
+using System.Collections.ObjectModel;
+using System.Reactive;
+using DynamicData;
+using Mentor4U_Avalonia.Models;
 using Mentor4U_Avalonia.ViewModels.Controls;
 using MsBox.Avalonia;
 using ReactiveUI;
@@ -16,7 +19,10 @@ public class Roles : ViewModelBase
         Watermark = "Найти",
         IsFloatingWatermark = false
     };
+
+    public ObservableCollection<Models.Role> RolesCollection { get; set; } = new();
     public ReactiveCommand<Unit, Unit> SearchCommand { get; }
+    public ReactiveCommand<Unit, Unit> ViewAllCommand { get; }
 
     public Roles()
     {
@@ -57,5 +63,26 @@ public class Roles : ViewModelBase
                 
             },
             canExecute: canExecuteSearchCommand);
+
+        ViewAllCommand = ReactiveCommand.CreateFromTask(
+            execute: async () =>
+            {
+                try
+                {
+                    var roles = new BLL.Roles(new DAL.Roles(CONNECTION_STRING));
+                    var collection  = await roles.GetAllAsync();
+                    RolesCollection.Clear();
+                    RolesCollection.AddRange(collection);
+                }
+                catch (Exception e)
+                {
+                    var box = MessageBoxManager
+                        .GetMessageBoxStandard(
+                            title: $"{App.Current.Resources["AppTitle"]} - Roles",
+                            text: $"{e.Message}");
+                    await box.ShowAsync();
+                }   
+            }
+            );
     }
 }

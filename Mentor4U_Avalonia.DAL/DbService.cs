@@ -62,6 +62,13 @@ public static class DbService<TEntity> where TEntity : IModel
          throw;
       }
    }
+
+   public static async Task<bool> ExecuteNonQueryAsync(string sqlRaw, object? parameters = null)
+   { 
+      if (_connection == null) return false;
+      var result = await _connection.ExecuteAsync(sqlRaw, parameters);
+      return result > 0;
+   }
    
  
    public static async Task DisconnectAsync()

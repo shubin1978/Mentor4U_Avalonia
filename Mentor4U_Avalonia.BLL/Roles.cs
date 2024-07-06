@@ -57,4 +57,34 @@ public class Roles
             throw;
         }
     }
+
+    public async Task<Role?> CreateAsync(Role role)
+    {
+        try
+        {
+            var result = await _data.InsertAsync(role);
+            if (!result) return null;
+            var newRole = await GetByNameAsync(role.RoleName);
+            return newRole;
+        }
+        catch (Exception e)
+        {
+            _logger?.Error($"Module:{nameof(BLL.Roles)}. Method:{CreateAsync}. Message:{e.Message}");
+            return null;//TODO Add Exception Handling
+        }
+    }
+
+    public async Task<bool> DeleteAsync(Role role)
+    {
+        try
+        {
+            var result = await _data.DeleteAsync(role.Id);
+            return result;
+        }
+        catch (Exception e)
+        {
+            _logger?.Error($"Module:{nameof(BLL.Roles)}. Method:{nameof(DeleteAsync)}. Message:{e.Message}");
+            return false;//TODO Add Exception Handling
+        } 
+    }
 }

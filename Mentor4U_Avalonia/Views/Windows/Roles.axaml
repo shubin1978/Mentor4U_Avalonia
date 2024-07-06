@@ -25,5 +25,13 @@
         <Button x:Name="ButtonSearch"
                 Content="Search"
                 Command="{Binding SearchCommand}"/>
+        <Button x:Name="ButtonViewAll"
+                Content="ViewAll"
+                Command="{Binding ViewAllCommand }"/>
+        <DataGrid x:Name="TableRoles"
+                  ItemsSource="{Binding RolesCollection}"
+                  AutoGenerateColumns="True" IsReadOnly="True" 
+                  GridLinesVisibility="All" BorderThickness="1" BorderBrush="Gray"
+                  Height="250"/>
     </StackPanel>
 </Window>
