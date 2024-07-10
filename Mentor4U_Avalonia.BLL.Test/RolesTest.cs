@@ -47,17 +47,19 @@ public class RolesTest
 
     [Fact]
 
-    public async Task GetAllAsync_positiveTest()
+    public  Task GetAllAsync_positiveTest()
     {
         //TODO Implement
         Assert.True(true);
+        return Task.CompletedTask;
     }
 
     [Fact]
-    public async Task GetAllAsync_NegativeTest()
+    public Task GetAllAsync_NegativeTest()
     {
         //TODO Implement
         Assert.False(false);
+        return Task.CompletedTask;
     }
 
     [Fact]
@@ -80,18 +82,5 @@ public class RolesTest
         
         var roleNew = await roles.CreateAsync(role);
         Assert.Null(roleNew);
-    }
-
-    [Fact]
-    public async Task DeleteAsync_PositiveTest()
-    {
-        
-        
-    }
-    [Fact]
-    public async Task DeleteAsync_NegativeTest()
-    {
-        
-        
     }
 }
