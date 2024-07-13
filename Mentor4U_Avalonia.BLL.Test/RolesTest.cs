@@ -47,11 +47,10 @@ public class RolesTest
 
     [Fact]
 
-    public  Task GetAllAsync_positiveTest()
+    public async Task GetAllAsync_positiveTest()
     {
         //TODO Implement
         Assert.True(true);
-        return Task.CompletedTask;
     }
 
     [Fact]
