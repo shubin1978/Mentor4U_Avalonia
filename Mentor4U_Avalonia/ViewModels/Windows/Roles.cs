@@ -3,8 +3,10 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading.Tasks;
 using DynamicData;
+using Mentor4U_Avalonia.Components;
+using Mentor4U_Avalonia.Components.ViewModel;
 using Mentor4U_Avalonia.Models;
-using Mentor4U_Avalonia.ViewModels.Controls;
+
 using MsBox.Avalonia;
 using ReactiveUI;
 
@@ -16,18 +18,20 @@ public class Roles : ViewModelBase
                                                   "Database=mentor_db;Pooling=true;SearchPath=test";
 
     private readonly BLL.Roles _roles;
-    public InputControlViewModel InputSearch { get; set; } = new()
+    public InputControlWithButtonViewModel InputSearch { get; set; } = new()
     {
         Label = "Search",
         Watermark = "Найти",
-        IsFloatingWatermark = false
+        IsFloatingWatermark = false,
+        Button = "Поиск"
     };
     
-    public InputControlViewModel InputNew { get; set; } = new()
+    public InputControlWithButtonViewModel InputNew { get; set; } = new()
     {
         Label = "New",
         Watermark = "Add new role",
-        IsFloatingWatermark = false
+        IsFloatingWatermark = false,
+        Button = "Save"
     };
 
     public ObservableCollection<Models.Role> RolesCollection { get; set; } = new();
@@ -38,9 +42,7 @@ public class Roles : ViewModelBase
         get => _selectedRole;
         set => this.RaiseAndSetIfChanged( ref _selectedRole, value); 
     }
-    public ReactiveCommand<Unit, Unit> SearchCommand { get; }
     public ReactiveCommand<Unit, Unit> ViewAllCommand { get; }
-    public ReactiveCommand<Unit, Unit> NewCommand { get; }
     public ReactiveCommand<Role, Unit> DeleteCommand { get; }
 
     public Roles()
@@ -48,18 +50,18 @@ public class Roles : ViewModelBase
         _roles = new BLL.Roles(new DAL.Roles(CONNECTION_STRING));
         
         var canExecuteSearchCommand = this.WhenAnyValue(
-            p => p.InputSearch.Input,
+            p => p.InputSearch.InputComponent.Input,
             (p) => !string.IsNullOrWhiteSpace(p));
         var canExecuteNewCommand = this.WhenAnyValue(
-            p => p.InputNew.Input,
+            p => p.InputNew.InputComponent.Input,
             (p) => !string.IsNullOrWhiteSpace(p));
         
-        SearchCommand = ReactiveCommand.CreateFromTask(
+        InputSearch.Command = ReactiveCommand.CreateFromTask(
             execute: async () =>
             {
                 try
                 {
-                    var input  = InputSearch.Input;
+                    var input = InputSearch.InputComponent.Input;
 
                     Models.Role? role;
                     if (int.TryParse(input, out var id))
@@ -70,23 +72,46 @@ public class Roles : ViewModelBase
                     {
                         role = await _roles.GetByNameAsync(input);
                     }
-                    var box = MessageBoxManager
-                        .GetMessageBoxStandard(
-                            title: $"{App.Current.Resources["AppTitle"]} - Roles",
-                            text: $"{role.Id} - {role.RoleName}");
-                    await box.ShowAsync();
+                    
+                    await ShowInfo($"{role.Id} - {role.RoleName}");
                 }
                 catch (Exception e)
                 {
-                    var box = MessageBoxManager
-                        .GetMessageBoxStandard(
-                            title: $"{App.Current.Resources["AppTitle"]} - Roles",
-                            text: $"{e.Message}");
-                    await box.ShowAsync();
+                    await ShowError(e.Message);
+                }
+            },
+            canExecute: canExecuteSearchCommand);
+        InputNew.Command = ReactiveCommand.CreateFromTask(
+            execute: async () =>
+            {
+                try
+                {
+                    var input  = InputNew.InputComponent.Input;
+
+                    var role = new Models.Role()
+                    {
+                        RoleName = input!
+                    };
+                    var result = await _roles.CreateAsync(role);
+                    if (result is not null)
+                    {
+                        await ShowInfo($"{result.Id} - {result.RoleName}");
+
+                        await UpdateRolesCollectionsyncAsync();
+                    }
+                    else
+                    {
+                        await ShowInfo($"Роль с именем {role.RoleName} не создалась");
+                    }
+                }
+                catch (Exception e)
+                {
+                    await ShowError(e.Message);
                 }
                 
             },
-            canExecute: canExecuteSearchCommand);
+            canExecute: canExecuteNewCommand);
+        
 
         ViewAllCommand = ReactiveCommand.CreateFromTask(
             execute: async () =>
@@ -97,56 +122,11 @@ public class Roles : ViewModelBase
                 }
                 catch (Exception e)
                 {
-                    var box = MessageBoxManager
-                        .GetMessageBoxStandard(
-                            title: $"{App.Current.Resources["AppTitle"]} - Roles",
-                            text: $"{e.Message}");
-                    await box.ShowAsync();
+                    await ShowError(e.Message);
                 }   
             }
             );
-        NewCommand = ReactiveCommand.CreateFromTask(
-            execute: async () =>
-            {
-                try
-                {
-                    var input  = InputNew.Input;
-
-                    var role = new Models.Role()
-                    {
-                        RoleName = input!
-                    };
-                    var result = await _roles.CreateAsync(role);
-                    if (result is not null)
-                    {
-                        var box = MessageBoxManager
-                            .GetMessageBoxStandard(
-                                title: $"{App.Current.Resources["AppTitle"]} - Roles",
-                                text: $"{result.Id} - {result.RoleName}");
-                        await box.ShowAsync();
-
-                        await UpdateRolesCollectionsyncAsync();
-                    }
-                    else
-                    {
-                        var box = MessageBoxManager
-                                                .GetMessageBoxStandard(
-                                                    title: $"{App.Current.Resources["AppTitle"]} - Roles",
-                                                    text: $"Роль с именем {role.RoleName} не создалась");
-                                            await box.ShowAsync();
-                    }
-                }
-                catch (Exception e)
-                {
-                    var box = MessageBoxManager
-                        .GetMessageBoxStandard(
-                            title: $"{App.Current.Resources["AppTitle"]} - Roles",
-                            text: $"{e.Message}");
-                    await box.ShowAsync();
-                }
-                
-            },
-            canExecute: canExecuteNewCommand);
+        
         DeleteCommand = ReactiveCommand.CreateFromTask<Role, Unit>(
             execute: async (role) =>
             {
@@ -157,11 +137,7 @@ public class Roles : ViewModelBase
                 }
                 catch (Exception e)
                 {
-                    var box = MessageBoxManager
-                        .GetMessageBoxStandard(
-                            title: $"{App.Current.Resources["AppTitle"]} - Roles",
-                            text: $"{e.Message}");
-                    await box.ShowAsync(); 
+                    await ShowError(e.Message);
                 }
 
                 return default;
@@ -173,5 +149,19 @@ public class Roles : ViewModelBase
         var collection  = await _roles.GetAllAsync();
         RolesCollection.Clear();
         RolesCollection.AddRange(collection);
+    }
+
+    private static async Task ShowError(string message)
+    {
+        await MessageBox.ShowError(
+            title: $"{App.Current.Resources["AppTitle"]} - Roles",
+            text: message);
+    }
+
+    private static async Task ShowInfo(string message)
+    {
+        await MessageBox.ShowInfo(
+            title: $"{App.Current.Resources["AppTitle"]} - Roles",
+            text: message);
     }
 }

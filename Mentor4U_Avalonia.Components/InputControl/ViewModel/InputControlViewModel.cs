@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Mentor4U_Avalonia.ViewModels.Controls;
+namespace Mentor4U_Avalonia.Components.ViewModel;
 
 public class InputControlViewModel : ViewModelBase
 {

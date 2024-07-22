@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:Mentor4U_Avalonia.ViewModels.Windows"
-        xmlns:controls="clr-namespace:Mentor4U_Avalonia.Views.Controls"
+        xmlns:component="clr-namespace:Mentor4U_Avalonia.Components;assembly=Mentor4U_Avalonia.Components"
 
         mc:Ignorable="d"
         d:DesignWidth="{StaticResource WindowWidth}"
@@ -41,7 +41,7 @@
                      UseFloatingWatermark="False"/>
         </StackPanel>-->
         
-        <controls:InputControl x:Name="InputControlLogin"
+        <component:InputControl x:Name="InputControlLogin"
                                DataContext="{Binding InputLogin}"/>
         
         <!--<StackPanel Orientation="Horizontal">
@@ -53,7 +53,7 @@
                      UseFloatingWatermark="True"
                      PasswordChar="*"/>
         </StackPanel>-->
-        <controls:InputControl x:Name="InputControlPassword"
+        <component:InputControl x:Name="InputControlPassword"
                                DataContext="{Binding InputPassword}"/>
         
         <StackPanel Orientation="Horizontal">
