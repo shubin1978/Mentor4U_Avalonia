@@ -1,21 +1,31 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Mentor4U_Avalonia.ViewModels.Windows"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Mentor4U_Avalonia.ViewModels.Windows"
+        xmlns:heroIcons="clr-namespace:HeroIconsAvalonia.Controls;assembly=HeroIconsAvalonia"
+        
         mc:Ignorable="d" 
         d:DesignWidth="{StaticResource WindowWidth}"
         d:DesignHeight="{StaticResource WindowHeight}"
+        
         x:Class="Mentor4U_Avalonia.Views.Windows.StartWindow"
         x:DataType="vm:StartWindowViewModel"
+        
         Icon="/Assets/avalonia-logo.ico"
         Title="Mentor4U_Avalonia"
+        
         WindowState="Normal"
         SystemDecorations="BorderOnly"
         WindowStartupLocation="CenterScreen"
         CanResize="False"
+        
         Width="{StaticResource WindowWidth}"
-        Height="{StaticResource WindowHeight}">
+        Height="{StaticResource WindowHeight}"
+        
+        PointerPressed="Window_OnPointerPressed"
+        PointerMoved="Window_OnPointerMoved"
+        PointerReleased="Window_OnPointerReleased">
 
     <Design.DataContext>
         <vm:StartWindowViewModel/>
@@ -30,7 +40,8 @@
     </Window.Resources>
     
     <Window.Styles>
-        <StyleInclude Source="../../Styles.axaml"/>
+        <StyleInclude Source="../../Styles/BaseStyles.axaml"/>
+        <StyleInclude Source="../../Styles/StartWindowStyles.axaml"/>
     </Window.Styles>
     
     <Window.Background>
@@ -45,20 +56,26 @@
         <StackPanel Orientation="Horizontal"  Grid.Row="0"
                     HorizontalAlignment="Right">
             
-            <Button x:Name="ButtonClose"
+            <!--<Button x:Name="ButtonClose"
                     Content="{StaticResource IconClose}"
-                    Command="{Binding CloseWindow}"/>
+                    Click="ButtonClose_OnClick"/>-->
+            <Button x:Name="ButtonClose"
+                    Click="ButtonClose_OnClick">
+                <heroIcons:HeroIcon Foreground="Crimson" Type="XCircle" />
+            </Button>
         </StackPanel>
         
         <StackPanel Grid.Row="1" >
-            <TextBlock Text="Ментор для вас"/>
-            <TextBlock Text="Сервис для поиска ментора и для поиска учеников"/>
+            <TextBlock Text="Ментор для вас"
+                       Classes="header"/>
+            <TextBlock Text="Сервис для поиска ментора и для поиска учеников"
+                       Classes="subheader"/>
         </StackPanel>
         
         <StackPanel Grid.Row="2">
             <Button x:Name="ButtonAuth"
                     Content="Авторизация"
-                    Command="{Binding Auth}"
+                    Click="Auth"
                     Classes="open"
                     IsDefault="True"/>
         </StackPanel>

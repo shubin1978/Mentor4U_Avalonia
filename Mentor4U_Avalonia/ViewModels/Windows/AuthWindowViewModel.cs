@@ -1,4 +1,5 @@
-﻿using System.Reactive;
+﻿using System;
+using System.Reactive;
 using System.Threading.Tasks;
 using Mentor4U_Avalonia.Components.ViewModel;
 using MsBox.Avalonia;
@@ -110,8 +111,8 @@ public class AuthWindowViewModel : ViewModelBase
          (p1, p2) => !string.IsNullOrWhiteSpace(p1) || !string.IsNullOrWhiteSpace(p2));
       ClearCommand = ReactiveCommand.Create(() =>
          {
-            InputLogin.Input = null;
-            InputPassword.Input = null;
+            InputLogin.Input = String.Empty;
+            InputPassword.Input = String.Empty;
          },
          canExecute: canExecuteClearCommand);
 

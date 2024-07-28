@@ -25,4 +25,9 @@ public static class MessageBox
                 Icon.Error);
         await box.ShowAsync();
     }
+
+    public static void ShowInfo()
+    {
+        throw new NotImplementedException();
+    }
 }
