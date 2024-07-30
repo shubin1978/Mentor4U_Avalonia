@@ -1,11 +1,12 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-
+using Mentor4U_Avalonia.ViewModels.Windows;
+using Mentor4U_Avalonia.Views.Windows;
 
 namespace Mentor4U_Avalonia;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {
@@ -16,11 +17,11 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new Views.Windows.StartWindow();
+            desktop.MainWindow = new StartWindow();
             {
-                DataContext = new ViewModels.Windows.StartWindowViewModel();
-            };
-            
+                DataContext = new StartWindowViewModel();
+            }
+            ;
         }
 
         base.OnFrameworkInitializationCompleted();

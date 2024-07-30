@@ -7,32 +7,31 @@ namespace Mentor4U_Avalonia.BLL;
 
 public class Roles
 {
-    private readonly ILogger _logger;
-    
     private readonly ICrud<Role> _data;
+    private readonly ILogger _logger;
 
     public Roles(ICrud<Role> data)
     {
         _data = data;
-        
+
         _logger = new LogToFile();
     }
- 
+
     public async Task<Role?> GetByIdAsync(int id)
     {
         try
         {
-            return  await _data.GetAsync(id);
+            return await _data.GetAsync(id);
         }
         catch (Exception e)
         {
-            _logger?.Error($"Module:{nameof(BLL.Roles)}. Method:{GetByIdAsync}. Message:{e.Message}");
+            _logger?.Error($"Module:{nameof(Roles)}. Method:{GetByIdAsync}. Message:{e.Message}");
             throw;
         }
     }
 
     public async Task<Role?> GetByNameAsync(string name)
-    { 
+    {
         try
         {
             return (await _data.GetAllAsync() ?? Array.Empty<Role>())
@@ -40,7 +39,7 @@ public class Roles
         }
         catch (Exception e)
         {
-            _logger?.Error($"Module:{nameof(BLL.Roles)}. Method:{GetByNameAsync}. Message:{e.Message}");
+            _logger?.Error($"Module:{nameof(Roles)}. Method:{GetByNameAsync}. Message:{e.Message}");
             throw;
         }
     }
@@ -53,7 +52,7 @@ public class Roles
         }
         catch (Exception e)
         {
-            _logger?.Error($"Module:{nameof(BLL.Roles)}. Method:{GetAllAsync}. Message:{e.Message}");
+            _logger?.Error($"Module:{nameof(Roles)}. Method:{GetAllAsync}. Message:{e.Message}");
             throw;
         }
     }
@@ -69,8 +68,8 @@ public class Roles
         }
         catch (Exception e)
         {
-            _logger?.Error($"Module:{nameof(BLL.Roles)}. Method:{CreateAsync}. Message:{e.Message}");
-            return null;//TODO Add Exception Handling
+            _logger?.Error($"Module:{nameof(Roles)}. Method:{CreateAsync}. Message:{e.Message}");
+            return null; //TODO Add Exception Handling
         }
     }
 
@@ -83,8 +82,8 @@ public class Roles
         }
         catch (Exception e)
         {
-            _logger?.Error($"Module:{nameof(BLL.Roles)}. Method:{nameof(DeleteAsync)}. Message:{e.Message}");
-            return false;//TODO Add Exception Handling
-        } 
+            _logger?.Error($"Module:{nameof(Roles)}. Method:{nameof(DeleteAsync)}. Message:{e.Message}");
+            return false; //TODO Add Exception Handling
+        }
     }
 }

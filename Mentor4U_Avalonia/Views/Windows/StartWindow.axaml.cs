@@ -8,6 +8,9 @@ namespace Mentor4U_Avalonia.Views.Windows;
 
 public partial class StartWindow : Window
 {
+    private bool _mouseDownForWindowMoving;
+    private PointerPoint _originalPoint;
+
     public StartWindow()
     {
         InitializeComponent();
@@ -15,7 +18,7 @@ public partial class StartWindow : Window
 
     private void ButtonClose_OnClick(object? sender, RoutedEventArgs e)
     {
-        (App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime).MainWindow.Close();
+        (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime).MainWindow.Close();
     }
 
     private void Auth(object? sender, RoutedEventArgs e)
@@ -24,14 +27,12 @@ public partial class StartWindow : Window
         window.Show();
         Close();
     }
-    private bool _mouseDownForWindowMoving = false;
-    private PointerPoint _originalPoint;
 
     private void Window_OnPointerMoved(object? sender, PointerEventArgs e)
     {
         if (!_mouseDownForWindowMoving) return;
 
-        PointerPoint currentPoint = e.GetCurrentPoint(this);
+        var currentPoint = e.GetCurrentPoint(this);
         Position = new PixelPoint(Position.X + (int)(currentPoint.Position.X - _originalPoint.Position.X),
             Position.Y + (int)(currentPoint.Position.Y - _originalPoint.Position.Y));
     }

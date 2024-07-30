@@ -4,7 +4,12 @@ namespace Mentor4U_Avalonia.Components.ViewModel;
 
 public class InputControlViewModel : ViewModelBase
 {
+    private string? _input;
+
+    private bool _isFloatingWatermark;
     private string _label;
+
+    private string? _watermark;
 
     public string Label
     {
@@ -12,23 +17,17 @@ public class InputControlViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _label, value);
     }
 
-    private string? _input;
-
     public string? Input
     {
         get => _input;
         set => this.RaiseAndSetIfChanged(ref _input, value);
     }
-    
-    private string? _watermark;
 
     public string? Watermark
     {
         get => _watermark;
         set => this.RaiseAndSetIfChanged(ref _watermark, value);
     }
-
-    private bool _isFloatingWatermark = false;
 
     public bool IsFloatingWatermark
     {

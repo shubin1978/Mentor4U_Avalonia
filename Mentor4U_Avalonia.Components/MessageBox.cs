@@ -9,18 +9,19 @@ public static class MessageBox
     {
         var box = MessageBoxManager
             .GetMessageBoxStandard(
-                title: title,
-                text: text,
+                title,
+                text,
                 ButtonEnum.Ok,
                 Icon.Info);
         await box.ShowAsync();
     }
+
     public static async Task ShowError(string title, string text)
     {
         var box = MessageBoxManager
             .GetMessageBoxStandard(
-                title: title,
-                text: text,
+                title,
+                text,
                 ButtonEnum.Ok,
                 Icon.Error);
         await box.ShowAsync();

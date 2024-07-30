@@ -8,27 +8,27 @@
         mc:Ignorable="d"
         d:DesignWidth="{StaticResource WindowWidth}"
         d:DesignHeight="{StaticResource WindowHeight}"
-        
+
         Width="{StaticResource WindowWidth}"
         Height="{StaticResource WindowHeight}"
-        
+
         x:Class="Mentor4U_Avalonia.Views.Windows.Roles"
         Title="Roles"
         x:DataType="vm:Roles">
     <Window.DataContext>
-            <vm:Roles/>
+        <vm:Roles />
     </Window.DataContext>
     <Window.Styles>
-         <StyleInclude Source="../../Styles/RolesStyles.axaml"/>
+        <StyleInclude Source="../../Styles/RolesStyles.axaml" />
     </Window.Styles>
     <StackPanel>
-            <DockPanel LastChildFill="False">
-                    <Button x:Name="ButtonViewAll"
-                            Content="ViewAll"
-                            Command="{Binding ViewAllCommand }"
-                            DockPanel.Dock="Left"/>
-                    
-                    <!--<StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+        <DockPanel LastChildFill="False">
+            <Button x:Name="ButtonViewAll"
+                    Content="ViewAll"
+                    Command="{Binding ViewAllCommand }"
+                    DockPanel.Dock="Left" />
+
+            <!--<StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                             <component:InputControl x:Name="InputControlSearch"
                                                    DataContext="{Binding InputSearch}"
                                                    Width="300"/>
@@ -36,37 +36,36 @@
                                     Content="Search"
                                     Command="{Binding SearchCommand}"/> 
                     </StackPanel>-->
-                    <component:InputControlWithButton x:Name="InputControlSearch"
-                                                      DataContext="{Binding InputSearch}"
-                                                      Width="300"
-                                                      DockPanel.Dock="Right"/>
-            </DockPanel>
-            
+            <component:InputControlWithButton x:Name="InputControlSearch"
+                                              DataContext="{Binding InputSearch}"
+                                              Width="300"
+                                              DockPanel.Dock="Right" />
+        </DockPanel>
+
         <DataGrid x:Name="TableRoles"
                   ItemsSource="{Binding RolesCollection}"
                   SelectedItem="{Binding SelectedRole}"
                   AutoGenerateColumns="False"
-                  IsReadOnly="True" 
+                  IsReadOnly="True"
                   GridLinesVisibility="All" BorderThickness="1" BorderBrush="Gray"
                   Height="250">
-                
-                <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
-                        <DataGridTextColumn Header="Роль" Binding="{Binding RoleName}"/>
-                        <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                   <DataTemplate>
-                                       <StackPanel DataContext="{Binding #TableRoles.((vm:Roles)DataContext)}">
-                                           <Button x:Name="ButtonDeleteRole"
-                                                   Content="Delete"
-                                                   Command="{Binding DeleteCommand }"
-                                                   CommandParameter="{Binding SelectedRole}"
-                                                   />     
-                                       </StackPanel>    
-                                   </DataTemplate>     
-                                </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                </DataGrid.Columns>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Роль" Binding="{Binding RoleName}" />
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel DataContext="{Binding #TableRoles.((vm:Roles)DataContext)}">
+                                <Button x:Name="ButtonDeleteRole"
+                                        Content="Delete"
+                                        Command="{Binding DeleteCommand }"
+                                        CommandParameter="{Binding SelectedRole}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
         </DataGrid>
         <!--<StackPanel Orientation="Horizontal">
                 <component:InputControl x:Name="InputControlNew"
@@ -77,8 +76,7 @@
                         Command="{Binding NewCommand}"/>    
         </StackPanel> -->
         <component:InputControlWithButton
-                x:Name="InputControlNew"
-                DataContext="{Binding InputNew}"
-                />
+            x:Name="InputControlNew"
+            DataContext="{Binding InputNew}" />
     </StackPanel>
 </Window>
